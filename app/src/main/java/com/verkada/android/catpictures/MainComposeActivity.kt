@@ -3,16 +3,11 @@ package com.verkada.android.catpictures
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,8 +17,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.verkada.android.catpictures.theme.CatPicturesTheme
+import com.verkada.android.catpictures.viewmodel.PictureViewModel
 
 class MainComposeActivity : ComponentActivity() {
+
+    private val pictureViewModel: PictureViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +42,7 @@ class MainComposeActivity : ComponentActivity() {
                                     }.isTrue(),
                                     label = { Text(text = screen.name) },
                                     onClick = {
+                                        pictureViewModel.deselectPicture()
                                         navController.navigate(screen.name) {
                                             // Pop up to the start destination of the graph to
                                             // avoid building up a large stack of destinations
@@ -79,7 +79,7 @@ class MainComposeActivity : ComponentActivity() {
                             .padding(innerPadding),
                         color = MaterialTheme.colors.background
                     ) {
-                        CatPicturesNavHost(navController = navController)
+                        CatPicturesNavHost(pictureViewModel = pictureViewModel, navController = navController)
                     }
                 }
             }

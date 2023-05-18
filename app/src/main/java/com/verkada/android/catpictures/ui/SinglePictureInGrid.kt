@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode
@@ -17,10 +16,9 @@ import com.verkada.android.catpictures.data.Picture
 
 @Composable
 fun SinglePictureInGrid(
-    index: Int,
     picture: Picture,
     highlighted: Boolean = false,
-    onClick: (Int) -> Unit,
+    onPictureClick: (Picture) -> Unit,
 ) {
     val colorFilter =
         if (highlighted)
@@ -30,7 +28,7 @@ fun SinglePictureInGrid(
     Box(
         modifier = Modifier
             .aspectRatio(1f)
-            .clickable { onClick(index) }
+            .clickable { onPictureClick(picture) }
     ) {
         AsyncImage(
             model = picture.url,
